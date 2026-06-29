@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upwork Proposal Generator AI | IncomeAIHub</title>
+<meta name="description" content="Free AI-powered Upwork Proposal Generator. Create winning, personalized freelance proposals in seconds. Built for Indian freelancers by IncomeAIHub.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+<!-- ============== ADSENSE PLACEHOLDER (HEAD) ============== -->
+<!--
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+-->
+
+<style>
+:root{
+  --bg-void:#05060a;
+  --bg-panel:#0b0e16;
+  --bg-panel2:#10141f;
+  --cyan:#00f6ff;
+  --cyan-dim:#0894a0;
+  --purple:#b14bff;
+  --purple-dim:#6a2fa3;
+  --green:#39ff8a;
+  --green-dim:#1f8a55;
+  --red:#ff4d6d;
+  --yellow:#ffd23f;
+  --text-main:#dbe9f5;
+  --text-dim:#7d8aa0;
+  --border-glow:rgba(0,246,255,0.25);
+  --radius:14px;
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+
+body{
+  background:var(--bg-void);
+  color:var(--text-main);
+  font-family:'Rajdhani',sans-serif;
+  min-height:100vh;
+  position:relative;
+  overflow-x:hidden;
+}
+
+/* Scanline overlay */
+body::before{
+  content:"";
+  position:fixed;
+  top:0;left:0;right:0;bottom:0;
+  background:repeating-linear-gradient(
+    0deg,
+    rgba(0,246,255,0.02) 0px,
+    rgba(0,246,255,0.02) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  pointer-events:none;
+  z-index:9999;
+  mix-blend-mode:overlay;
+}
+
+/* Background grid + glow */
+body::after{
+  content:"";
+  position:fixed;
+  top:-20%;left:-10%;
+  width:120%;height:140%;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(177,75,255,0.12), transparent 35%),
+    radial-gradient(circle at 85% 75%, rgba(0,246,255,0.10), transparent 35%),
+    linear-gradient(rgba(0,246,255,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,246,255,0.035) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 38px 38px, 38px 38px;
+  z-index:-1;
+  pointer-events:none;
+}
+
+.wrap{
+  max-width:1280px;
+  margin:0 auto;
+  padding:18px 16px 60px;
+  position:relative;
+  z-index:1;
+}
+
+/* ===== HEADER ===== */
+header.top{
+  text-align:center;
+  padding:26px 10px 22px;
+  border-bottom:1px solid rgba(0,246,255,0.15);
+  margin-bottom:24px;
+}
+.brand{
+  font-family:'Share Tech Mono',monospace;
+  font-size:12px;
+  letter-spacing:3px;
+  color:var(--green);
+  opacity:0.85;
+  margin-bottom:10px;
+  text-transform:uppercase;
+}
+h1.title{
+  font-family:'Orbitron',sans-serif;
+  font-weight:900;
+  font-size:clamp(26px,5vw,46px);
+  margin:0 0 10px;
+  background:linear-gradient(90deg,var(--cyan),var(--purple) 55%,var(--green));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  text-shadow:0 0 30px rgba(0,246,255,0.25);
+  letter-spacing:1px;
+}
+.subtitle{
+  font-size:clamp(13px,2.2vw,16px);
+  color:var(--text-dim);
+  max-width:680px;
+  margin:0 auto;
+  line-height:1.5;
+}
+.badges{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:16px;
+}
+.badge{
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;
+  padding:5px 12px;
+  border-radius:30px;
+  border:1px solid var(--cyan-dim);
+  color:var(--cyan);
+  background:rgba(0,246,255,0.05);
+  letter-spacing:0.5px;
+}
+
+/* ===== AD SLOT ===== */
+.ad-slot{
+  border:1px dashed rgba(0,246,255,0.25);
+  border-radius:var(--radius);
+  background:rgba(255,255,255,0.015);
+  color:var(--text-dim);
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;
+  text-align:center;
+  padding:14px;
+  margin:18px 0;
+  letter-spacing:1px;
+}
+
+/* ===== LAYOUT ===== */
+.main-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:22px;
+  align-items:start;
+}
+@media (max-width:920px){
+  .main-grid{grid-template-columns:1fr;}
+}
+
+.panel{
+  background:linear-gradient(160deg,var(--bg-panel),var(--bg-panel2));
+  border:1px solid var(--border-glow);
+  border-radius:var(--radius);
+  padding:22px;
+  position:relative;
+  box-shadow:0 0 0 1px rgba(255,255,255,0.02) inset, 0 10px 30px rgba(0,0,0,0.4);
+}
+.panel::before{
+  content:"";
+  position:absolute;
+  top:0;left:18px;right:18px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--cyan),transparent);
+  opacity:0.6;
+}
+
+.panel-title{
+  font-family:'Orbitron',sans-serif;
+  font-size:15px;
+  color:var(--cyan);
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  margin:0 0 18px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.panel-title .dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 10px var(--green);
+}
+
+label{
+  display:block;
+  font-size:13px;
+  color:var(--text-dim);
+  margin:16px 0 6px;
+  letter-spacing:0.5px;
+  text-transform:uppercase;
+  font-weight:600;
+}
+label:first-of-type{margin-top:0;}
+
+input[type=text], input[type=number], textarea, select{
+  width:100%;
+  background:#070910;
+  border:1px solid rgba(0,246,255,0.2);
+  color:var(--text-main);
+  border-radius:8px;
+  padding:11px 12px;
+  font-family:'Rajdhani',sans-serif;
+  font-size:14.5px;
+  outline:none;
+  transition:border-color .2s, box-shadow .2s;
+  resize:vertical;
+}
+input[type=text]:focus, input[type=number]:focus, textarea:focus, select:focus{
+  border-color:var(--cyan);
+  box-shadow:0 0 0 3px rgba(0,246,255,0.12);
+}
+textarea{min-height:110px; line-height:1.5;}
+select{
+  appearance:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='8'><path d='M0 0 L7 8 L14 0' fill='%2300f6ff'/></svg>");
+  background-repeat:no-repeat;
+  background-position:right 14px center;
+  padding-right:36px;
+  cursor:pointer;
+}
+.hint{
+  font-size:11.5px;
+  color:var(--text-dim);
+  margin-top:4px;
+  opacity:0.8;
+}
+
+.row2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+@media (max-width:520px){
+  .row2{grid-template-columns:1fr;}
+}
+
+/* Tone / template pill selectors */
+.pill-group{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:8px;
+}
+.pill{
+  font-family:'Share Tech Mono',monospace;
+  font-size:12px;
+  padding:8px 14px;
+  border-radius:30px;
+  border:1px solid rgba(0,246,255,0.25);
+  background:rgba(255,255,255,0.02);
+  color:var(--text-dim);
+  cursor:pointer;
+  transition:all .2s;
+  user-select:none;
+}
+.pill:hover{border-color:var(--cyan); color:var(--text-main);}
+.pill.active{
+  background:linear-gradient(90deg,rgba(0,246,255,0.18),rgba(177,75,255,0.18));
+  border-color:var(--cyan);
+  color:var(--cyan);
+  box-shadow:0 0 12px rgba(0,246,255,0.2);
+}
+
+/* Buttons */
+.btn{
+  font-family:'Orbitron',sans-serif;
+  font-size:13.5px;
+  letter-spacing:1px;
+  padding:13px 22px;
+  border-radius:9px;
+  border:none;
+  cursor:pointer;
+  transition:transform .15s, box-shadow .2s, opacity .2s;
+  text-transform:uppercase;
+}
+.btn:active{transform:scale(0.97);}
+.btn-primary{
+  background:linear-gradient(90deg,var(--cyan),var(--purple));
+  color:#04060a;
+  box-shadow:0 0 20px rgba(0,246,255,0.3);
+  width:100%;
+  margin-top:22px;
+  padding:15px 22px;
+  font-size:15px;
+}
+.btn-primary:hover{box-shadow:0 0 28px rgba(0,246,255,0.5);}
+.btn-secondary{
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--cyan-dim);
+  color:var(--cyan);
+}
+.btn-secondary:hover{background:rgba(0,246,255,0.08);}
+.btn-ghost{
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.12);
+  color:var(--text-dim);
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;
+  padding:8px 14px;
+  text-transform:none;
+  letter-spacing:0.5px;
+}
+.btn-ghost:hover{border-color:var(--cyan); color:var(--cyan);}
+.btn-danger{
+  background:rgba(255,77,109,0.08);
+  border:1px solid var(--red);
+  color:var(--red);
+}
+.btn-row{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:14px;
+}
+.btn-row .btn{flex:1; min-width:130px; margin-top:0;}
+
+/* Right panel - output */
+.output-box{
+  background:#070910;
+  border:1px solid rgba(0,246,255,0.18);
+  border-radius:10px;
+  padding:18px;
+  min-height:340px;
+  white-space:pre-wrap;
+  font-family:'Rajdhani',sans-serif;
+  font-size:14.5px;
+  line-height:1.7;
+  color:var(--text-main);
+  position:relative;
+}
+.output-box.empty{
+  color:var(--text-dim);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  font-family:'Share Tech Mono',monospace;
+  font-size:13px;
+}
+
+.meta-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:12px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:11.5px;
+  color:var(--text-dim);
+}
+.char-count{
+  padding:4px 10px;
+  border-radius:6px;
+  border:1px solid rgba(255,255,255,0.1);
+}
+.char-count.warn{color:var(--yellow); border-color:var(--yellow);}
+.char-count.over{color:var(--red); border-color:var(--red);}
+
+/* Score meter */
+.score-card{
+  margin-top:18px;
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:10px;
+  padding:16px;
+}
+.score-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+}
+.score-label{
+  font-family:'Orbitron',sans-serif;
+  font-size:12px;
+  letter-spacing:1px;
+  color:var(--text-dim);
+  text-transform:uppercase;
+}
+.score-value{
+  font-family:'Orbitron',sans-serif;
+  font-size:20px;
+  font-weight:900;
+}
+.score-bar-track{
+  width:100%;
+  height:10px;
+  border-radius:6px;
+  background:rgba(255,255,255,0.06);
+  overflow:hidden;
+}
+.score-bar-fill{
+  height:100%;
+  border-radius:6px;
+  transition:width .4s ease;
+  background:linear-gradient(90deg,var(--red),var(--yellow),var(--green));
+}
+.score-tips{
+  margin-top:12px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.tip{
+  font-size:12.5px;
+  display:flex;
+  gap:8px;
+  align-items:flex-start;
+  color:var(--text-dim);
+}
+.tip .icon{flex-shrink:0; margin-top:1px;}
+.tip.good{color:var(--green);}
+.tip.bad{color:var(--yellow);}
+
+/* History */
+.history-list{
+  margin-top:14px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  max-height:220px;
+  overflow-y:auto;
+  padding-right:4px;
+}
+.history-list::-webkit-scrollbar{width:6px;}
+.history-list::-webkit-scrollbar-thumb{background:var(--cyan-dim); border-radius:3px;}
+.history-item{
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:8px;
+  padding:10px 12px;
+  font-size:12.5px;
+  cursor:pointer;
+  transition:border-color .2s;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+.history-item:hover{border-color:var(--cyan);}
+.history-item .h-title{
+  color:var(--text-main);
+  font-weight:600;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.history-item .h-date{
+  color:var(--text-dim);
+  font-family:'Share Tech Mono',monospace;
+  font-size:10.5px;
+  flex-shrink:0;
+}
+.history-item .h-del{
+  color:var(--red);
+  flex-shrink:0;
+  font-size:14px;
+  padding:2px 6px;
+}
+.no-history{
+  color:var(--text-dim);
+  font-size:12.5px;
+  text-align:center;
+  padding:14px;
+  font-family:'Share Tech Mono',monospace;
+}
+
+/* toast */
+.toast{
+  position:fixed;
+  bottom:24px;
+  left:50%;
+  transform:translateX(-50%) translateY(20px);
+  background:var(--bg-panel2);
+  border:1px solid var(--green);
+  color:var(--green);
+  padding:12px 22px;
+  border-radius:30px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:12.5px;
+  z-index:1000;
+  opacity:0;
+  transition:opacity .25s, transform .25s;
+  pointer-events:none;
+  box-shadow:0 0 24px rgba(57,255,138,0.3);
+}
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+/* Hindi guide */
+.guide-toggle{
+  text-align:center;
+  margin:26px 0 8px;
+}
+.guide-section{
+  background:linear-gradient(160deg,var(--bg-panel),var(--bg-panel2));
+  border:1px solid rgba(177,75,255,0.3);
+  border-radius:var(--radius);
+  padding:22px;
+  margin-top:14px;
+  display:none;
+  line-height:1.8;
+  font-size:14.5px;
+}
+.guide-section.show{display:block;}
+.guide-section h3{
+  font-family:'Orbitron',sans-serif;
+  color:var(--purple);
+  font-size:16px;
+  margin-top:22px;
+  margin-bottom:8px;
+}
+.guide-section h3:first-child{margin-top:0;}
+.guide-section ul{padding-left:20px; margin:8px 0;}
+.guide-section li{margin-bottom:6px; color:var(--text-main);}
+.guide-section p{color:var(--text-main); margin:6px 0;}
+
+footer{
+  text-align:center;
+  margin-top:40px;
+  padding-top:20px;
+  border-top:1px solid rgba(0,246,255,0.1);
+  color:var(--text-dim);
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;
+}
+footer a{color:var(--cyan); text-decoration:none;}
+
+.req-star{color:var(--red);}
+
+/* Spinner for generate button */
+.spinner{
+  display:inline-block;
+  width:14px;height:14px;
+  border:2px solid rgba(4,6,10,0.3);
+  border-top-color:#04060a;
+  border-radius:50%;
+  animation:spin .6s linear infinite;
+  vertical-align:middle;
+  margin-right:8px;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand">⚡ IncomeAIHub.com presents</div>
+    <h1 class="title">UPWORK PROPOSAL GENERATOR</h1>
+    <p class="subtitle">Job description paste karo → personalized, high-converting Upwork proposal seconds mein generate karo. No generic templates. Built for freelancers who want to win more clients.</p>
+    <div class="badges">
+      <span class="badge">🤖 AI-Style Smart Engine</span>
+      <span class="badge">📊 Proposal Score Meter</span>
+      <span class="badge">🇮🇳 India-Friendly</span>
+      <span class="badge">💾 Auto-Save History</span>
+    </div>
+  </header>
+
+  <!-- AD SLOT TOP -->
+  <div class="ad-slot">AD PLACEHOLDER — 728x90 / Responsive Leaderboard (Top)</div>
+
+  <div class="main-grid">
+
+    <!-- ============ LEFT: INPUT PANEL ============ -->
+    <div class="panel">
+      <h2 class="panel-title"><span class="dot"></span> Job & Profile Details</h2>
+
+      <label>Job Title <span class="req-star">*</span></label>
+      <input type="text" id="jobTitle" placeholder="e.g. Need a React Developer for SaaS Dashboard">
+
+      <label>Paste Job Description <span class="req-star">*</span></label>
+      <textarea id="jobDesc" placeholder="Paste the full Upwork job post here. The more detail, the better your proposal..."></textarea>
+      <div class="hint">Tip: Paste the entire job post — humara engine keywords aur pain-points khud detect karega.</div>
+
+      <label>Your Name</label>
+      <input type="text" id="yourName" placeholder="e.g. Rohan Sharma">
+
+      <label>Your Skills / Tools (comma separated) <span class="req-star">*</span></label>
+      <input type="text" id="yourSkills" placeholder="e.g. React, Node.js, MongoDB, REST APIs">
+
+      <label>Relevant Experience / Past Work (1-2 lines)</label>
+      <textarea id="experience" placeholder="e.g. Built 12+ SaaS dashboards for US/EU clients, 4 years freelancing on Upwork with 98% Job Success Score"></textarea>
+
+      <div class="row2">
+        <div>
+          <label>Proposed Rate</label>
+          <input type="text" id="rate" placeholder="e.g. $15/hr or $400 fixed">
+        </div>
+        <div>
+          <label>Availability</label>
+          <select id="availability">
+            <option value="immediately">Available immediately</option>
+            <option value="within2days">Within 2 days</option>
+            <option value="thisweek">This week</option>
+            <option value="parttime">Part-time (10-15 hrs/week)</option>
+          </select>
+        </div>
+      </div>
+
+      <label>Proposal Template Style</label>
+      <div class="pill-group" id="templatePills">
+        <div class="pill active" data-val="punchy">⚡ Short & Punchy</div>
+        <div class="pill" data-val="detailed">📋 Detailed & Professional</div>
+        <div class="pill" data-val="question">❓ Question-Led</div>
+        <div class="pill" data-val="portfolio">🎯 Portfolio-Led</div>
+      </div>
+
+      <label>Tone</label>
+      <div class="pill-group" id="tonePills">
+        <div class="pill active" data-val="confident">💪 Confident</div>
+        <div class="pill" data-val="friendly">😊 Friendly</div>
+        <div class="pill" data-val="formal">🎓 Expert / Formal</div>
+      </div>
+
+      <button class="btn btn-primary" id="generateBtn" onclick="generateProposal()">⚡ Generate Proposal</button>
+    </div>
+
+    <!-- ============ RIGHT: OUTPUT PANEL ============ -->
+    <div class="panel">
+      <h2 class="panel-title"><span class="dot"></span> Generated Proposal</h2>
+
+      <div class="output-box empty" id="outputBox">
+        Job details fill karke "Generate Proposal" dabao — aapka personalized proposal yahaan dikhega.
+      </div>
+
+      <div class="meta-row">
+        <span id="wordCount">0 words</span>
+        <span class="char-count" id="charCount">0 / 5000 characters</span>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="copyProposal()">📋 Copy</button>
+        <button class="btn btn-secondary" onclick="downloadProposal()">⬇️ Download .txt</button>
+        <button class="btn btn-secondary" onclick="regenerateVariant()">🔄 Regenerate</button>
+      </div>
+
+      <!-- Score Meter -->
+      <div class="score-card">
+        <div class="score-top">
+          <span class="score-label">Proposal Strength Score</span>
+          <span class="score-value" id="scoreValue" style="color:var(--text-dim)">--</span>
+        </div>
+        <div class="score-bar-track">
+          <div class="score-bar-fill" id="scoreBar" style="width:0%"></div>
+        </div>
+        <div class="score-tips" id="scoreTips"></div>
+      </div>
+
+      <!-- History -->
+      <label style="margin-top:20px;">Saved Proposals (Local History)</label>
+      <div class="history-list" id="historyList">
+        <div class="no-history">Koi saved proposal nahi hai abhi.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- AD SLOT MID -->
+  <div class="ad-slot">AD PLACEHOLDER — 336x280 / In-Content Rectangle</div>
+
+  <!-- HINDI GUIDE -->
+  <div class="guide-toggle">
+    <button class="btn btn-ghost" onclick="toggleGuide()" id="guideBtn">🇮🇳 Hindi Guide Dekhein / Hide Guide</button>
+  </div>
+
+  <div class="guide-section" id="guideSection">
+    <h3>📖 Upwork Proposal Generator कैसे इस्तेमाल करें</h3>
+    <p>यह टूल आपके लिए <strong>personalized aur high-converting Upwork proposal</strong> कुछ ही सेकंड में तैयार करता है — बिना generic copy-paste templates के।</p>
+
+    <h3>1️⃣ Job Description Paste करें</h3>
+    <ul>
+      <li>Upwork पर जो job post आपको पसंद आई है, उसका पूरा description copy करके paste करें।</li>
+      <li>जितना detail देंगे, टूल उतने ही बेहतर keywords aur client ki pain-points पकड़ेगा।</li>
+    </ul>
+
+    <h3>2️⃣ अपनी Skills और Experience भरें</h3>
+    <ul>
+      <li>Skills को comma से separate करके लिखें — जैसे: React, Node.js, MongoDB</li>
+      <li>Experience line में अपना सबसे strong selling point डालें — जैसे number of projects, years of experience, या koi badi success story।</li>
+    </ul>
+
+    <h3>3️⃣ Template Style aur Tone चुनें</h3>
+    <ul>
+      <li><strong>Short & Punchy</strong> — जब client busy लगे या job post छोटा हो।</li>
+      <li><strong>Detailed & Professional</strong> — high-budget, complex projects के लिए।</li>
+      <li><strong>Question-Led</strong> — engagement बढ़ाने के लिए, client से जल्दी reply पाने के लिए।</li>
+      <li><strong>Portfolio-Led</strong> — जब आपके पास strong past work हो दिखाने के लिए।</li>
+    </ul>
+
+    <h3>4️⃣ Generate करें और Score देखें</h3>
+    <ul>
+      <li>"Generate Proposal" दबाने पर आपका proposal तुरंत तैयार होगा।</li>
+      <li>नीचे <strong>Proposal Strength Score</strong> देखें — यह बताता है कि आपका proposal personalization, length, और call-to-action में कितना अच्छा है।</li>
+      <li>Yellow/red tips पर ध्यान दें — वो आपको proposal सुधारने में मदद करेंगे।</li>
+    </ul>
+
+    <h3>5️⃣ Copy, Download या Save करें</h3>
+    <ul>
+      <li><strong>Copy</strong> बटन से proposal सीधे clipboard में copy होगा — Upwork पर paste कर दें।</li>
+      <li><strong>Download .txt</strong> से file save हो जाएगी।</li>
+      <li>हर generated proposal automatically <strong>History</strong> में save हो जाता है (आपके browser में ही, kahin bahar nahi jaata) — purane proposals दोबारा देख सकते हैं।</li>
+    </ul>
+
+    <h3>💡 Pro Tips</h3>
+    <ul>
+      <li>Upwork का character limit 5000 है — हमारा counter आपको real-time track करता है।</li>
+      <li>हमेशा generated proposal को थोड़ा personalize करें — client का नाम (अगर पता हो) या koi specific detail add करें।</li>
+      <li>"Regenerate" दबाकर same details पर thoda different variation भी try कर सकते हैं।</li>
+    </ul>
+  </div>
+
+  <!-- AD SLOT BOTTOM -->
+  <div class="ad-slot">AD PLACEHOLDER — 728x90 / Responsive Leaderboard (Bottom)</div>
+
+  <footer>
+    <p>⚡ Powered by <a href="#">IncomeAIHub.com</a> — AI Tools for Indian Freelancers, Creators & Entrepreneurs</p>
+    <p>All data stays in your browser (localStorage). Nothing is uploaded anywhere.</p>
+  </footer>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   STATE
+============================================================ */
+let selectedTemplate = 'punchy';
+let selectedTone = 'confident';
+let currentProposal = '';
+const STORAGE_KEY = 'upwork_proposal_history_v1';
+const MAX_CHARS = 5000;
+const MAX_HISTORY = 15;
+
+/* ============================================================
+   PILL SELECTORS
+============================================================ */
+document.getElementById('templatePills').addEventListener('click', function(e){
+  const pill = e.target.closest('.pill');
+  if(!pill) return;
+  [...this.children].forEach(p => p.classList.remove('active'));
+  pill.classList.add('active');
+  selectedTemplate = pill.dataset.val;
+});
+
+document.getElementById('tonePills').addEventListener('click', function(e){
+  const pill = e.target.closest('.pill');
+  if(!pill) return;
+  [...this.children].forEach(p => p.classList.remove('active'));
+  pill.classList.add('active');
+  selectedTone = pill.dataset.val;
+});
+
+/* ============================================================
+   KEYWORD / SKILL EXTRACTION ENGINE
+============================================================ */
+const FILLER_WORDS = new Set(['the','and','for','with','that','this','from','your','you','are','will','have','has','need','needs','looking','about','our','their','they','them','able','must','should','also','only','more','than','into','using','use','able','work','project','candidate','candidates','please','who','can','who\'s','a','an','to','of','in','on','is','it','as','be','we','i','or','at','by']);
+
+function extractKeywords(text){
+  if(!text) return [];
+  const words = text
+    .toLowerCase()
+    .replace(/[^a-z0-9+#.\s-]/g, ' ')
+    .split(/\s+/)
+    .filter(w => w.length > 2 && !FILLER_WORDS.has(w));
+
+  const freq = {};
+  words.forEach(w => freq[w] = (freq[w]||0)+1);
+
+  return Object.entries(freq)
+    .sort((a,b)=>b[1]-a[1])
+    .slice(0,8)
+    .map(e=>e[0]);
+}
+
+function detectPainPoints(text){
+  const lower = (text||'').toLowerCase();
+  const points = [];
+  const patterns = [
+    {k:['urgent','asap','immediately','quickly'], msg:'time-sensitive delivery'},
+    {k:['long term','long-term','ongoing'], msg:'a long-term working relationship'},
+    {k:['bug','fix','broken','error','issue'], msg:'fixing existing issues quickly and cleanly'},
+    {k:['scratch','from scratch','new project','build'], msg:'building something solid from the ground up'},
+    {k:['redesign','revamp','improve','optimi'], msg:'improving what already exists'},
+    {k:['budget','affordable','cheap'], msg:'getting strong value within budget'},
+    {k:['communication','responsive','available'], msg:'clear, responsive communication throughout'},
+    {k:['deadline','timeline'], msg:'hitting deadlines without compromising quality'}
+  ];
+  patterns.forEach(p=>{
+    if(p.k.some(kw=>lower.includes(kw))) points.push(p.msg);
+  });
+  return points;
+}
+
+function pickPainPoint(text){
+  const pts = detectPainPoints(text);
+  return pts.length ? pts[0] : 'getting this done right, the first time';
+}
+
+function getFirstSentence(text){
+  if(!text) return '';
+  const clean = text.trim().replace(/\s+/g,' ');
+  const match = clean.match(/^[^.!?]{10,160}[.!?]/);
+  return match ? match[0] : clean.slice(0,140);
+}
+
+/* ============================================================
+   TONE PHRASE BANKS
+============================================================ */
+const TONE_BANK = {
+  confident: {
+    opener: ['I can deliver exactly what you need here.', "I'm confident I'm the right fit for this.", "This is squarely in my wheelhouse."],
+    closer: ["Let's get started — I'm ready to dive in right away.", "I'd love to jump on a quick call to discuss next steps.", "Ready to begin as soon as you give the go-ahead."]
+  },
+  friendly: {
+    opener: ["I'd genuinely love to help out with this!", "This caught my eye and I think we'd work well together.", "Happy to help bring this to life with you."],
+    closer: ["Would love to chat more about your vision — feel free to message me anytime!", "Looking forward to hopefully working together on this 🙂", "Let me know if you have any questions, happy to help!"]
+  },
+  formal: {
+    opener: ['I would welcome the opportunity to contribute to this project.', 'Please allow me to outline why I am well-suited for this role.', 'I have reviewed your requirements thoroughly and believe I am a strong match.']
+    ,closer: ['I look forward to the possibility of discussing this further at your convenience.', 'I would be glad to provide additional references or samples upon request.', 'Thank you for your consideration; I await your response.']
+  }
+};
+
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+/* ============================================================
+   PROPOSAL BUILDERS (per template style)
+============================================================ */
+function buildPunchy(data){
+  const t = TONE_BANK[data.tone];
+  return `Hi${data.clientHint},
+
+${pick(t.opener)} ${data.painLine}
+
+Here's what I bring: ${data.skillsLine}. ${data.expLine}
+
+${data.rateLine}${data.availLine}
+
+${pick(t.closer)}
+
+${data.signOff}`;
+}
+
+function buildDetailed(data){
+  const t = TONE_BANK[data.tone];
+  return `Hi${data.clientHint},
+
+${pick(t.opener)} I read through your job post carefully — "${data.firstSentence}" — and I'm confident I can help with ${data.painLine}
+
+A bit about my background:
+${data.expLine} My core skills include ${data.skillsLine}, which line up directly with what this project needs.
+
+My approach would be to:
+• Start by clarifying scope and any open questions so there are no surprises later
+• Move quickly through the build/implementation while keeping you updated regularly
+• Test thoroughly and polish before final delivery
+
+${data.rateLine}${data.availLine}
+
+${pick(t.closer)}
+
+${data.signOff}`;
+}
+
+function buildQuestion(data){
+  const t = TONE_BANK[data.tone];
+  return `Hi${data.clientHint},
+
+${pick(t.opener)}
+
+Before diving in, I had a couple of quick questions that would help me tailor my approach:
+1. Is there an existing codebase/design I should review, or are we starting fresh?
+2. What does success look like for you by the end of this project?
+
+In the meantime, here's why I think I'm a strong fit: ${data.skillsLine}. ${data.expLine}
+
+${data.rateLine}${data.availLine}
+
+${pick(t.closer)}
+
+${data.signOff}`;
+}
+
+function buildPortfolio(data){
+  const t = TONE_BANK[data.tone];
+  return `Hi${data.clientHint},
+
+${pick(t.opener)} ${data.painLine}
+
+A relevant example from my past work: ${data.expLine} I'd be glad to share specific case studies or live links that closely match what you're looking for.
+
+Skills I'd be applying here: ${data.skillsLine}.
+
+${data.rateLine}${data.availLine}
+
+${pick(t.closer)}
+
+${data.signOff}`;
+}
+
+const BUILDERS = {
+  punchy: buildPunchy,
+  detailed: buildDetailed,
+  question: buildQuestion,
+  portfolio: buildPortfolio
+};
+
+/* ============================================================
+   MAIN GENERATE FUNCTION
+============================================================ */
+function generateProposal(){
+  const jobTitle = document.getElementById('jobTitle').value.trim();
+  const jobDesc = document.getElementById('jobDesc').value.trim();
+  const yourName = document.getElementById('yourName').value.trim();
+  const yourSkills = document.getElementById('yourSkills').value.trim();
+  const experience = document.getElementById('experience').value.trim();
+  const rate = document.getElementById('rate').value.trim();
+  const availability = document.getElementById('availability').value;
+
+  if(!jobTitle || !jobDesc || !yourSkills){
+    showToast('⚠️ Please fill Job Title, Job Description aur Skills (required fields)', true);
+    return;
+  }
+
+  const btn = document.getElementById('generateBtn');
+  btn.innerHTML = '<span class="spinner"></span> Generating...';
+  btn.disabled = true;
+
+  setTimeout(()=>{
+    const skillsArr = yourSkills.split(',').map(s=>s.trim()).filter(Boolean);
+    const skillsLine = skillsArr.length > 1
+      ? skillsArr.slice(0,-1).join(', ') + ' and ' + skillsArr[skillsArr.length-1]
+      : (skillsArr[0] || 'a strong relevant skillset');
+
+    const painLine = 'It looks like you need help with ' + pickPainPoint(jobDesc) + ', and that\'s exactly where I can add value.';
+    const firstSentence = getFirstSentence(jobDesc);
+
+    const availMap = {
+      immediately: 'I can start immediately and dedicate focused time to this.',
+      within2days: 'I can begin within the next 2 days.',
+      thisweek: 'I can start this week and keep momentum going from day one.',
+      parttime: 'I can commit 10-15 hours/week consistently for this.'
+    };
+
+    const data = {
+      tone: selectedTone,
+      clientHint: '', // Upwork often doesn't show client name; kept neutral
+      painLine: painLine,
+      firstSentence: firstSentence,
+      skillsLine: skillsLine,
+      expLine: experience ? experience + '.' : 'I\'ve worked on similar projects and consistently deliver clean, reliable results.',
+      rateLine: rate ? `My rate for this would be ${rate}. ` : '',
+      availLine: availMap[availability] || '',
+      signOff: yourName ? yourName : 'Looking forward to hearing from you'
+    };
+
+    const builder = BUILDERS[selectedTemplate] || buildPunchy;
+    let proposal = builder(data);
+
+    // Clean up double spaces/blank line issues
+    proposal = proposal.replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+
+    if(proposal.length > MAX_CHARS){
+      proposal = proposal.slice(0, MAX_CHARS - 3) + '...';
+    }
+
+    currentProposal = proposal;
+    renderOutput(proposal);
+    scoreProposal(proposal, {jobTitle, jobDesc, skillsArr, rate});
+    saveToHistory(jobTitle, proposal);
+
+    btn.innerHTML = '⚡ Generate Proposal';
+    btn.disabled = false;
+    showToast('✅ Proposal generated successfully!');
+  }, 600);
+}
+
+function regenerateVariant(){
+  const jobTitle = document.getElementById('jobTitle').value.trim();
+  const jobDesc = document.getElementById('jobDesc').value.trim();
+  const yourSkills = document.getElementById('yourSkills').value.trim();
+  if(!jobTitle || !jobDesc || !yourSkills){
+    showToast('⚠️ Pehle proposal generate karo, fir regenerate karo', true);
+    return;
+  }
+  generateProposal();
+}
+
+/* ============================================================
+   OUTPUT RENDER
+============================================================ */
+function renderOutput(text){
+  const box = document.getElementById('outputBox');
+  box.classList.remove('empty');
+  box.textContent = text;
+
+  const words = text.trim().split(/\s+/).filter(Boolean).length;
+  const chars = text.length;
+
+  document.getElementById('wordCount').textContent = words + ' words';
+  const cc = document.getElementById('charCount');
+  cc.textContent = chars + ' / ' + MAX_CHARS + ' characters';
+  cc.classList.remove('warn','over');
+  if(chars > MAX_CHARS) cc.classList.add('over');
+  else if(chars > MAX_CHARS * 0.9) cc.classList.add('warn');
+}
+
+/* ============================================================
+   SCORING ENGINE
+============================================================ */
+const GENERIC_PHRASES = [
+  'dear hiring manager', 'i am writing to', 'i have read your job posting',
+  'i am the best candidate', 'i can do this job', 'to whom it may concern',
+  'i have many years of experience in', 'i am perfect for this job'
+];
+
+function scoreProposal(text, ctx){
+  let score = 0;
+  const tips = [];
+  const lower = text.toLowerCase();
+
+  // 1. Length check (Upwork sweet spot ~ 80-200 words)
+  const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
+  if(wordCount >= 60 && wordCount <= 220){
+    score += 25;
+    tips.push({type:'good', text:'Proposal length is in a good range (not too short, not too long).'});
+  } else if(wordCount < 60){
+    tips.push({type:'bad', text:'Proposal lagta hai chhota hai — thoda zyada detail/experience add karo.'});
+  } else {
+    tips.push({type:'bad', text:'Proposal lamba hai — clients short, focused proposals zyada padhte hain.'});
+  }
+
+  // 2. Personalization - does it reference job-specific keywords
+  const jobKeywords = extractKeywords(ctx.jobDesc);
+  const matchedKeywords = jobKeywords.filter(k => lower.includes(k));
+  if(matchedKeywords.length >= 2){
+    score += 25;
+    tips.push({type:'good', text:'Job description ke keywords proposal mein reflect ho rahe hain — good personalization.'});
+  } else {
+    tips.push({type:'bad', text:'Job description se aur specific details mention karo for stronger personalization.'});
+  }
+
+  // 3. Skills mentioned
+  const skillsMentioned = ctx.skillsArr.filter(s => lower.includes(s.toLowerCase())).length;
+  if(skillsMentioned >= 1){
+    score += 20;
+    tips.push({type:'good', text:'Aapki relevant skills clearly mention ho rahi hain.'});
+  } else {
+    tips.push({type:'bad', text:'Skills proposal mein clearly nahi dikh rahi — recheck karo.'});
+  }
+
+  // 4. Generic phrase detection
+  const hasGeneric = GENERIC_PHRASES.some(p => lower.includes(p));
+  if(!hasGeneric){
+    score += 15;
+    tips.push({type:'good', text:'Koi generic/copy-paste phrase detect nahi hui — proposal original lagta hai.'});
+  } else {
+    tips.push({type:'bad', text:'Generic phrases detect hui hain jo clients ko turn-off karti hain.'});
+  }
+
+  // 5. Call to action present
+  const hasCTA = /(call|chat|message|discuss|let's|let us|start|begin|question)/i.test(text.slice(-200));
+  if(hasCTA){
+    score += 15;
+    tips.push({type:'good', text:'Strong call-to-action ending ke saath — clients ko reply karna easy lagega.'});
+  } else {
+    tips.push({type:'bad', text:'Ending mein clear call-to-action add karo (e.g. "Let\'s hop on a quick call").'});
+  }
+
+  renderScore(score, tips);
+}
+
+function renderScore(score, tips){
+  const valEl = document.getElementById('scoreValue');
+  const barEl = document.getElementById('scoreBar');
+  const tipsEl = document.getElementById('scoreTips');
+
+  valEl.textContent = score + '/100';
+  barEl.style.width = score + '%';
+
+  let color = 'var(--red)';
+  if(score >= 80) color = 'var(--green)';
+  else if(score >= 50) color = 'var(--yellow)';
+  valEl.style.color = color;
+
+  tipsEl.innerHTML = tips.map(t => `
+    <div class="tip ${t.type}">
+      <span class="icon">${t.type === 'good' ? '✅' : '⚠️'}</span>
+      <span>${t.text}</span>
+    </div>
+  `).join('');
+}
+
+/* ============================================================
+   COPY / DOWNLOAD
+============================================================ */
+function copyProposal(){
+  if(!currentProposal){
+    showToast('⚠️ Pehle proposal generate karo', true);
+    return;
+  }
+  navigator.clipboard.writeText(currentProposal).then(()=>{
+    showToast('📋 Proposal clipboard mein copy ho gaya!');
+  }).catch(()=>{
+    showToast('⚠️ Copy fail ho gaya, manually select karke copy karo', true);
+  });
+}
+
+function downloadProposal(){
+  if(!currentProposal){
+    showToast('⚠️ Pehle proposal generate karo', true);
+    return;
+  }
+  const jobTitle = document.getElementById('jobTitle').value.trim() || 'upwork-proposal';
+  const filename = jobTitle.toLowerCase().replace(/[^a-z0-9]+/g,'-').slice(0,40) + '.txt';
+  const blob = new Blob([currentProposal], {type:'text/plain'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('⬇️ Download shuru ho gaya!');
+}
+
+/* ============================================================
+   HISTORY (localStorage)
+============================================================ */
+function getHistory(){
+  try{
+    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+  }catch(e){
+    return [];
+  }
+}
+
+function saveToHistory(title, text){
+  let history = getHistory();
+  history.unshift({
+    id: Date.now(),
+    title: title || 'Untitled Job',
+    text: text,
+    date: new Date().toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'})
+  });
+  history = history.slice(0, MAX_HISTORY);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+  renderHistory();
+}
+
+function renderHistory(){
+  const list = document.getElementById('historyList');
+  const history = getHistory();
+
+  if(history.length === 0){
+    list.innerHTML = '<div class="no-history">Koi saved proposal nahi hai abhi.</div>';
+    return;
+  }
+
+  list.innerHTML = history.map(item => `
+    <div class="history-item" onclick="loadHistoryItem(${item.id})">
+      <span class="h-title">${escapeHtml(item.title)}</span>
+      <span class="h-date">${item.date}</span>
+      <span class="h-del" onclick="deleteHistoryItem(event, ${item.id})">✕</span>
+    </div>
+  `).join('');
+}
+
+function loadHistoryItem(id){
+  const history = getHistory();
+  const item = history.find(h => h.id === id);
+  if(!item) return;
+  currentProposal = item.text;
+  renderOutput(item.text);
+  showToast('📂 Purana proposal load ho gaya');
+  window.scrollTo({top: document.querySelector('.main-grid').offsetTop - 20, behavior:'smooth'});
+}
+
+function deleteHistoryItem(e, id){
+  e.stopPropagation();
+  let history = getHistory();
+  history = history.filter(h => h.id !== id);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+  renderHistory();
+  showToast('🗑️ Proposal history se delete ho gaya');
+}
+
+function escapeHtml(str){
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+/* ============================================================
+   TOAST
+============================================================ */
+let toastTimer;
+function showToast(msg, isWarning){
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.style.borderColor = isWarning ? 'var(--yellow)' : 'var(--green)';
+  toast.style.color = isWarning ? 'var(--yellow)' : 'var(--green)';
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=> toast.classList.remove('show'), 3000);
+}
+
+/* ============================================================
+   HINDI GUIDE TOGGLE
+============================================================ */
+function toggleGuide(){
+  document.getElementById('guideSection').classList.toggle('show');
+}
+
+/* ============================================================
+   INIT
+============================================================ */
+renderHistory();
+</script>
+
+</body>
+</html>
